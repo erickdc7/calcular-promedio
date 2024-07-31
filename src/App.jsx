@@ -40,6 +40,7 @@ function App() {
     let total = 0; // Inicializa la suma total de las notas
     let totalPercentage = 0; // Inicializa la suma total de los porcentajes
     let newError = ''; // Inicializa el mensaje de error
+    let validEntry = false; // Bandera para verificar si hay alguna entrada válida
 
     // Validar que todas las notas sean entre 0 y 20 y que los porcentajes estén entre 0 y 100
     for (let i = 0; i < grades.length; i++) {
@@ -66,9 +67,15 @@ function App() {
       }
 
       if (grade && percentage) {
+        validEntry = true; // Marca que hay al menos una entrada válida
         total += parseFloat(grade) * (parseFloat(percentage) / 100); // Calcula el valor ponderado y lo suma al total
         totalPercentage += parseFloat(percentage); // Suma el porcentaje al total de porcentajes
       }
+    }
+
+    // Validar que haya al menos una entrada válida
+    if (!newError && !validEntry) {
+      newError = 'Debe ingresar al menos una nota y un porcentaje.';
     }
 
     // Validar que la suma de los porcentajes no exceda el 100%
