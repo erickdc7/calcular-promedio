@@ -100,7 +100,7 @@ function App() {
       {average !== null && ( // Muestra el promedio si está calculado
         <p>Tu promedio es <br /> <span className='number'>{average}</span></p>
       )}
-      <span className='copy'>
+      <span className='copy' translate='no'>
         Made with ❤️ by Erick DC
       </span>
     </div>
