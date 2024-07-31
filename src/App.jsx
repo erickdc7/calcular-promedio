@@ -1,4 +1,4 @@
-import { useState } from 'react'; // Importa el hook useState de React
+import { useState } from 'react';
 import './App.css';
 
 function App() {
