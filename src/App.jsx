@@ -97,7 +97,7 @@ function App() {
       <div className="grades-container">
         <div className="grid-container header">
           <div>DESCRIPCIÓN</div>
-          <div>NOTA</div>
+          <div translate='no'>NOTA</div>
           <div>PORCENTAJE</div>
         </div>
         {grades.map((grade, index) => ( // Mapea cada objeto de notas a una fila de inputs
