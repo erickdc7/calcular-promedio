@@ -11,6 +11,8 @@ function App() {
 
   // Define el estado inicial para el promedio
   const [average, setAverage] = useState(null);
+  // Define el estado inicial para los errores
+  const [error, setError] = useState('');
 
   // Función para manejar los cambios en los inputs
   const handleInputChange = (index, event) => {
@@ -37,14 +39,56 @@ function App() {
   const calculateAverage = () => {
     let total = 0; // Inicializa la suma total de las notas
     let totalPercentage = 0; // Inicializa la suma total de los porcentajes
-    grades.forEach(({ grade, percentage }) => { // Itera sobre cada objeto de notas
-      if (grade && percentage) { // Si hay valores para la nota y el porcentaje
+    let newError = ''; // Inicializa el mensaje de error
+
+    // Validar que todas las notas sean entre 0 y 20 y que los porcentajes estén entre 0 y 100
+    for (let i = 0; i < grades.length; i++) {
+      const { grade, percentage } = grades[i];
+
+      if (!grade && percentage) {
+        newError = `Debe ingresar una nota para el porcentaje en la fila ${i + 1}.`;
+        break;
+      }
+
+      if (grade && !percentage) {
+        newError = `Debe ingresar un porcentaje para la nota en la fila ${i + 1}.`;
+        break;
+      }
+
+      if (parseFloat(grade) < 0 || parseFloat(grade) > 20) {
+        newError = `La nota en la fila ${i + 1} debe estar entre 0 y 20.`;
+        break;
+      }
+
+      if (parseFloat(percentage) < 0 || parseFloat(percentage) > 100) {
+        newError = `El porcentaje en la fila ${i + 1} debe estar entre 0 y 100.`;
+        break;
+      }
+
+      if (grade && percentage) {
         total += parseFloat(grade) * (parseFloat(percentage) / 100); // Calcula el valor ponderado y lo suma al total
         totalPercentage += parseFloat(percentage); // Suma el porcentaje al total de porcentajes
       }
-    });
-    const avg = total / (totalPercentage / 100); // Calcula el promedio
-    setAverage(avg.toFixed(2)); // Actualiza el estado con el promedio, redondeado a dos decimales
+    }
+
+    // Validar que la suma de los porcentajes no exceda el 100%
+    if (!newError && totalPercentage > 100) {
+      newError = `La suma de los porcentajes no debe exceder el 100%.`;
+    }
+
+    // Validar que la suma de los porcentajes sea exactamente 100%
+    if (!newError && totalPercentage !== 100) {
+      newError = `La suma de los porcentajes debe ser exactamente 100%.`;
+    }
+
+    if (newError) {
+      setError(newError); // Establece el mensaje de error
+      setAverage(null); // Borra el promedio anterior
+    } else {
+      const avg = total / (totalPercentage / 100); // Calcula el promedio
+      setAverage(avg.toFixed(2)); // Actualiza el estado con el promedio, redondeado a dos decimales
+      setError(''); // Borra cualquier mensaje de error previo
+    }
   };
 
   return (
@@ -71,6 +115,8 @@ function App() {
               value={grade.grade}
               onChange={(event) => handleInputChange(index, event)}
               placeholder="Nota"
+              min="0" // Asegura que el valor mínimo sea 0
+              max="20" // Asegura que el valor máximo sea 20
             />
             <div className="percentage-container">
               <div className="percentage-input">
@@ -80,6 +126,8 @@ function App() {
                   value={grade.percentage}
                   onChange={(event) => handleInputChange(index, event)}
                   placeholder="Porcentaje"
+                  min="0" // Asegura que el valor mínimo sea 0
+                  max="100" // Asegura que el valor máximo sea 100
                 />
                 <div className="percentage-symbol">%</div>
               </div>
@@ -97,7 +145,10 @@ function App() {
       <button className="calculate-button" onClick={calculateAverage}>
         Calcular
       </button>
-      {average !== null && ( // Muestra el promedio si está calculado
+      {error && ( // Muestra el mensaje de error si hay alguno
+        <p className="error">ERROR: {error}</p>
+      )}
+      {average !== null && !error && ( // Muestra el promedio si está calculado y no hay error
         <p>Tu promedio es <br /> <span className='number'>{average}</span></p>
       )}
       <span className='copy' translate='no'>

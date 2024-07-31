@@ -30,9 +30,7 @@
   font-weight: 400;
   font-size: 12px;
   line-height: 15px;
-  /* identical to box height */
   text-transform: uppercase;
-
   color: rgba(0, 0, 0, 0.7);
 }
 
@@ -140,7 +138,7 @@ h1 {
   font-weight: 500;
   font-size: 30px;
   line-height: 3.5rem;
-  color: rgba(56, 55, 55, 0.85);
+  color: rgba(56, 55, 55, 0.9);
 }
 
 .copy {
