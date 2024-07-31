@@ -140,7 +140,7 @@ h1 {
   font-weight: 500;
   font-size: 30px;
   line-height: 3.5rem;
-  color: rgba(0, 0, 0, 0.85);
+  color: rgba(56, 55, 55, 0.85);
 }
 
 .copy {
@@ -149,7 +149,7 @@ h1 {
   right: 0;
   left: 0;
   font-size: 12px;
-  color: rgba(0, 0, 0, 0.8);
+  color: #3c3c3c;
   background-color: #fff;
   padding: 0.25rem;
 }
