@@ -49,7 +49,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>CALCULA TU PROMEDIO 📝</h1>
+      <h1>CALCULA TU PROMEDIO</h1>
       <div className="grades-container">
         <div className="grid-container header">
           <div>DESCRIPCIÓN</div>
