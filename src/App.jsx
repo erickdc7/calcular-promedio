@@ -115,6 +115,7 @@ function App() {
               value={grade.grade}
               onChange={(event) => handleInputChange(index, event)}
               placeholder="Nota"
+              translate='no'
               min="0" // Asegura que el valor mínimo sea 0
               max="20" // Asegura que el valor máximo sea 20
             />
