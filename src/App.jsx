@@ -22,6 +22,7 @@ function App() {
     setGrades(newGrades); // Actualiza el estado con la nueva copia
   };
 
+  // HI
   // Función para agregar una nueva fila de notas
   const handleAddGrade = () => {
     setGrades([...grades, { description: '', grade: '', percentage: '' }]); // Agrega un nuevo objeto de notas vacío al array
