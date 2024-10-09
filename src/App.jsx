@@ -102,10 +102,10 @@ function App() {
       setError('');
 
       // Condicional para mostrar imagen según el promedio
-      if (avg >= 14) {
-        setRandomImage(BuenaNota); // Si el promedio es mayor o igual a 14, muestra BuenaNota
+      if (avg >= 13.5) {
+        setRandomImage(BuenaNota); // Si el promedio es mayor o igual a 13.5, muestra BuenaNota
       } else {
-        setRandomImage(MalaNota); // Si el promedio es menor que 14, muestra MalaNota
+        setRandomImage(MalaNota); // Si el promedio es menor que 13.5, muestra MalaNota
       }
     }
   };
@@ -172,7 +172,11 @@ function App() {
         <p>Tu promedio es <br /> <span className='number'>{average}</span></p>
       )}
       {randomImage && (
-        <img src={randomImage} alt="Resultado" className='result-img' />
+        <div>
+          <img src={randomImage} alt="Resultado" className='result-img' />
+          {/* Mostrar el mensaje "REPOSTEA SI VAS A SUSTI" solo si la imagen es de mala nota */}
+          {randomImage === MalaNota && <p className="study-more">REPOSTEA SI VAS A SUSTI</p>}
+        </div>
       )}
       <span className='copy' translate='no'>
         Made with ❤️ by Erick DC
