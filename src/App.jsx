@@ -4,6 +4,7 @@ import Image2 from '../src/assets/capibara2.png';
 import Image3 from '../src/assets/capibara3.png';
 import BuenaNota from '../src/assets/buena-nota.png'; // Imagen para notas >= 14
 import MalaNota from '../src/assets/mala-nota.png';  // Imagen para notas < 14 
+import ErrorImage from '../src/assets/error-img.png'; // Imagen para errores
 import './App.css';
 
 function App() {
@@ -94,6 +95,7 @@ function App() {
     if (newError) {
       setError(newError);
       setAverage(null);
+      setRandomImage(ErrorImage); // Cambia la imagen a la de error
     } else {
       const avg = total / (totalPercentage / 100);
       setAverage(avg.toFixed(2));
