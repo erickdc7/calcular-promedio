@@ -152,6 +152,11 @@ h1 {
   padding: 0.25rem;
 }
 
+.result-img {
+  width: 200px;
+  margin-top: 1rem;
+}
+
 @media screen and (max-width: 870px) {
   .grid-container {
     grid-template-columns: 1fr 100px 1fr;

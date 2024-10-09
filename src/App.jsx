@@ -1,48 +1,54 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Image1 from '../src/assets/capibara1.png';
+import Image2 from '../src/assets/capibara2.png';
+import Image3 from '../src/assets/capibara3.png';
+import BuenaNota from '../src/assets/buena-nota.png'; // Imagen para notas >= 14
+import MalaNota from '../src/assets/mala-nota.png';  // Imagen para notas < 14 
 import './App.css';
 
 function App() {
-  // Define el estado inicial para las notas
   const [grades, setGrades] = useState([
     { description: '', grade: '', percentage: '' },
     { description: '', grade: '', percentage: '' },
     { description: '', grade: '', percentage: '' }
   ]);
 
-  // Define el estado inicial para el promedio
   const [average, setAverage] = useState(null);
-  // Define el estado inicial para los errores
   const [error, setError] = useState('');
+  const [randomImage, setRandomImage] = useState(null);
+
+  // Función para seleccionar una imagen aleatoria al cargar la página
+  useEffect(() => {
+    const images = [Image1, Image2, Image3];
+    const randomIndex = Math.floor(Math.random() * images.length);
+    setRandomImage(images[randomIndex]);
+  }, []);
 
   // Función para manejar los cambios en los inputs
   const handleInputChange = (index, event) => {
-    const { name, value } = event.target; // Obtiene el nombre y el valor del input
-    const newGrades = [...grades]; // Crea una copia del array de notas
-    newGrades[index][name] = value; // Actualiza el valor correspondiente en la copia
-    setGrades(newGrades); // Actualiza el estado con la nueva copia
+    const { name, value } = event.target;
+    const newGrades = [...grades];
+    newGrades[index][name] = value;
+    setGrades(newGrades);
   };
 
-  // Función para agregar una nueva fila de notas
   const handleAddGrade = () => {
-    setGrades([...grades, { description: '', grade: '', percentage: '' }]); // Agrega un nuevo objeto de notas vacío al array
+    setGrades([...grades, { description: '', grade: '', percentage: '' }]);
   };
 
-  // Función para eliminar una fila de notas
   const handleRemoveGrade = (index) => {
-    if (grades.length > 1) { // Solo permite eliminar si hay más de una fila
-      const newGrades = grades.filter((_, i) => i !== index); // Filtra el array para eliminar el elemento en el índice dado
-      setGrades(newGrades); // Actualiza el estado con la nueva copia
+    if (grades.length > 1) {
+      const newGrades = grades.filter((_, i) => i !== index);
+      setGrades(newGrades);
     }
   };
 
-  // Función para calcular el promedio
   const calculateAverage = () => {
-    let total = 0; // Inicializa la suma total de las notas
-    let totalPercentage = 0; // Inicializa la suma total de los porcentajes
-    let newError = ''; // Inicializa el mensaje de error
-    let validEntry = false; // Bandera para verificar si hay alguna entrada válida
+    let total = 0;
+    let totalPercentage = 0;
+    let newError = '';
+    let validEntry = false;
 
-    // Validar que todas las notas sean entre 0 y 20 y que los porcentajes estén entre 0 y 100
     for (let i = 0; i < grades.length; i++) {
       const { grade, percentage } = grades[i];
 
@@ -67,34 +73,38 @@ function App() {
       }
 
       if (grade && percentage) {
-        validEntry = true; // Marca que hay al menos una entrada válida
-        total += parseFloat(grade) * (parseFloat(percentage) / 100); // Calcula el valor ponderado y lo suma al total
-        totalPercentage += parseFloat(percentage); // Suma el porcentaje al total de porcentajes
+        validEntry = true;
+        total += parseFloat(grade) * (parseFloat(percentage) / 100);
+        totalPercentage += parseFloat(percentage);
       }
     }
 
-    // Validar que haya al menos una entrada válida
     if (!newError && !validEntry) {
       newError = 'Debe ingresar al menos una nota y un porcentaje.';
     }
 
-    // Validar que la suma de los porcentajes no exceda el 100%
     if (!newError && totalPercentage > 100) {
       newError = `La suma de los porcentajes no debe exceder el 100%.`;
     }
 
-    // Validar que la suma de los porcentajes sea exactamente 100%
     if (!newError && totalPercentage !== 100) {
       newError = `La suma de los porcentajes debe ser exactamente 100%.`;
     }
 
     if (newError) {
-      setError(newError); // Establece el mensaje de error
-      setAverage(null); // Borra el promedio anterior
+      setError(newError);
+      setAverage(null);
     } else {
-      const avg = total / (totalPercentage / 100); // Calcula el promedio
-      setAverage(avg.toFixed(2)); // Actualiza el estado con el promedio, redondeado a dos decimales
-      setError(''); // Borra cualquier mensaje de error previo
+      const avg = total / (totalPercentage / 100);
+      setAverage(avg.toFixed(2));
+      setError('');
+
+      // Condicional para mostrar imagen según el promedio
+      if (avg >= 14) {
+        setRandomImage(BuenaNota); // Si el promedio es mayor o igual a 14, muestra BuenaNota
+      } else {
+        setRandomImage(MalaNota); // Si el promedio es menor que 14, muestra MalaNota
+      }
     }
   };
 
@@ -107,7 +117,7 @@ function App() {
           <div translate='no'>NOTA</div>
           <div>PORCENTAJE</div>
         </div>
-        {grades.map((grade, index) => ( // Mapea cada objeto de notas a una fila de inputs
+        {grades.map((grade, index) => (
           <div className="grid-container" key={index}>
             <input
               type="text"
@@ -123,8 +133,8 @@ function App() {
               onChange={(event) => handleInputChange(index, event)}
               placeholder="Nota"
               translate='no'
-              min="0" // Asegura que el valor mínimo sea 0
-              max="20" // Asegura que el valor máximo sea 20
+              min="0"
+              max="20"
             />
             <div className="percentage-container">
               <div className="percentage-input">
@@ -134,16 +144,16 @@ function App() {
                   value={grade.percentage}
                   onChange={(event) => handleInputChange(index, event)}
                   placeholder="Porcentaje"
-                  min="0" // Asegura que el valor mínimo sea 0
-                  max="100" // Asegura que el valor máximo sea 100
+                  min="0"
+                  max="100"
                 />
                 <div className="percentage-symbol">%</div>
               </div>
               <div className="buttons">
                 <button onClick={handleAddGrade}>+</button>
                 <button
-                  onClick={() => handleRemoveGrade(index)} // Botón para eliminar una fila
-                  disabled={grades.length === 1} // Deshabilita el botón si solo hay una fila
+                  onClick={() => handleRemoveGrade(index)}
+                  disabled={grades.length === 1}
                 >-</button>
               </div>
             </div>
@@ -153,11 +163,14 @@ function App() {
       <button className="calculate-button" onClick={calculateAverage}>
         Calcular
       </button>
-      {error && ( // Muestra el mensaje de error si hay alguno
+      {error && (
         <p className="error">ERROR: {error}</p>
       )}
-      {average !== null && !error && ( // Muestra el promedio si está calculado y no hay error
+      {average !== null && !error && (
         <p>Tu promedio es <br /> <span className='number'>{average}</span></p>
+      )}
+      {randomImage && (
+        <img src={randomImage} alt="Resultado" className='result-img' />
       )}
       <span className='copy' translate='no'>
         Made with ❤️ by Erick DC
